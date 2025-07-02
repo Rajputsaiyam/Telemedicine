@@ -1,0 +1,64 @@
+class MedSphereDashboard {
+   // ... (previous code)
+
+   loadDynamicContent() {
+       this.loadAppointments();
+       this.setupPatientCards();
+   }
+
+   setupPatientCards() {
+       document.querySelectorAll('.patient-card').forEach(card => {
+           card.addEventListener('click', (e) => {
+               const patientId = card.dataset.patientId;
+               this.openPatientModal(patientId);
+           });
+       });
+
+       // Close modal when X is clicked
+       document.querySelector('.close').addEventListener('click', () => {
+           document.getElementById('patientModal').style.display = 'none';
+       });
+   }
+
+   openPatientModal(patientId) {
+       // Simulated API call to fetch patient data
+       const patientData = this.getPatientData(patientId);
+       
+       // Update modal content
+       document.getElementById('modalAvatar').src = patientData.avatar;
+       document.getElementById('modalPatientName').textContent = patientData.name;
+       document.getElementById('modalPatientCondition').textContent = patientData.condition;
+       
+       // Show modal
+       document.getElementById('patientModal').style.display = 'block';
+   }
+
+   getPatientData(patientId) {
+       // Mock data - in a real app, this would be an API call
+       const patients = {
+           "124578": {
+               name: "Emily Chen",
+               avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+               condition: "Hypertension & Arrhythmia",
+               vitals: {
+                   bp: "138/88",
+                   temp: "98.6°F",
+                   pulse: "72 bpm"
+               },
+               medications: ["Lisinopril 10mg", "Metoprolol 25mg"]
+           },
+           "125679": {
+               name: "Michael Wong",
+               avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+               condition: "Type 2 Diabetes",
+               vitals: {
+                   bp: "142/90",
+                   temp: "97.8°F",
+                   pulse: "68 bpm"
+               },
+               medications: ["Metformin 500mg", "Empagliflozin 10mg"]
+           }
+       };
+       return patients[patientId];
+   }
+}

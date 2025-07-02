@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal | TMed</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --secondary-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --radius: 0.375rem;
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f9fafb;
+            color: var(--gray-700);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 1rem 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            width: 2rem;
+            height: 2rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .user-nav a {
+            color: var(--gray-500);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .user-nav a:hover {
+            color: var(--primary);
+        }
+
+        .avatar {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gray-200);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .patient-header {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-card {
+            flex: 1;
+            min-width: 300px;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-light);
+        }
+
+        .profile-info h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .profile-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            min-width: 200px;
+        }
+
+        .btn {
+            padding: 0.625rem 1rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-md);
+            border-top: 3px solid var(--primary);
+        }
+
+        .stat-title {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.25rem 0;
+        }
+
+        .stat-desc {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .record {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .record:last-child {
+            border-bottom: none;
+        }
+
+        .record-content {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .record-title {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .record-details {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+        }
+
+        .record-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .record-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-primary {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .status-success {
+            background: var(--secondary-light);
+            color: var(--secondary);
+        }
+
+        .status-warning {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .status-danger {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .chart-container {
+            height: 250px;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--gray-500);
+        }
+
+        .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--gray-200);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray-500);
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        footer {
+            background-color: var(--gray-100);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-700);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col a {
+            color: var(--gray-500);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-meta {
+                align-items: center;
+            }
+            
+            .action-buttons {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <span>TMed</span>
+            </div>
+            <div class="user-nav">
+                <a href="#"><i class="fas fa-bell"></i></a>
+                <a href="#"><i class="fas fa-question-circle"></i></a>
+                <img src="https://randomuser.me/api/portraits/lego/1.jpg" alt="User" class="avatar">
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1><i class="fas fa-user-injured"></i> Patient Health Records</h1>
+
+        <div class="patient-header">
+            <div class="profile-card">
+                <img src="download.webp" alt="Patient" class="profile-avatar">
+                <div class="profile-info">
+                    <h2>Rahul Sharma</h2>
+                    <div class="profile-meta">
+                        <span><i class="fas fa-birthday-cake"></i> DOB: 15/05/1989 (35 years)</span>
+                        <span><i class="fas fa-venus-mars"></i> Male</span>
+                        <span><i class="fas fa-id-card"></i> Patient ID: MT2025001</span>
+                        <span><i class="fas fa-tint"></i> Blood Group: O+</span>
+                    </div>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary">
+                    <i class="fas fa-download"></i> Export Records
+                </button>
+                <button class="btn btn-outline">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+                <button class="btn btn-outline">
+                    <i class="fas fa-print"></i> Print
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Active Conditions</div>
+                <div class="stat-value">2</div>
+                <div class="stat-desc">
+                    <i class="fas fa-check-circle" style="color: var(--secondary);"></i> Managed
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Current Medications</div>
+                <div class="stat-value">3</div>
+                <div class="stat-desc">
+                    <i class="fas fa-prescription-bottle-alt" style="color: var(--primary);"></i> Active
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Allergies</div>
+                <div class="stat-value">1</div>
+                <div class="stat-desc">
+                    <i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> Critical
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Last Visit</div>
+                <div class="stat-value">15d</div>
+                <div class="stat-desc">
+                    <i class="fas fa-clock" style="color: var(--gray-500);"></i> Days ago
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="overview">Overview</div>
+            <div class="tab" data-tab="medications">Medications</div>
+            <div class="tab" data-tab="conditions">Conditions</div>
+            <div class="tab" data-tab="appointments">Appointments</div>
+        </div>
+
+        <div class="tab-content active" id="overview">
+            <div class="dashboard">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-heartbeat"></i> Vital Signs</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-history"></i> History
+                            </button>
+                        </div>
+                    </div>
+                    <div class="record">
+                        <div class="record-content">
+                            <div class="record-title">Blood Pressure</div>
+                            <div class="record-details">120/80 mmHg (Normal range: 90/60 - 120/80)</div>
+                            <div class="record-meta">
+                                <span><i class="far fa-calendar-alt"></i> 15 Jan 2025</span>
+                                <span class="status status-success">Normal</span>
+                            </div>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-chart-line"></i> Trend
+                            </button>
+                        </div>
+                    </div>
+                    <div class="record">
+                        <div class="record-content">
+                            <div class="record-title">Heart Rate</div>
+                            <div class="record-details">72 bpm (Resting, Normal range: 60-100 bpm)</div>
+                            <div class="record-meta">
+                                <span><i class="far fa-calendar-alt"></i> 15 Jan 2025</span>
+                                <span class="status status-success">Normal</span>
+                            </div>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-chart-line"></i> Trend
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="vitalsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-procedures"></i> Recent Visits</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-calendar-plus"></i> Schedule
+                            </button>
+                        </div>
+                    </div>
+                    <div class="record">
+                        <div class="record-content">
+                            <div class="record-title">Annual Physical Exam</div>
+                            <div class="record-details">
+                                Dr. Priya Patel, Primary Care<br>
+                                Routine checkup, all vitals normal
+                            </div>
+                            <div class="record-meta">
+                                <span><i class="far fa-calendar-alt"></i> 15 Jan 2025</span>
+                                <span class="status status-success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="record">
+                        <div class="record-content">
+                            <div class="record-title">Asthma Follow-up</div>
+                            <div class="record-details">
+                                Dr. Amit Joshi, Pulmonology<br>
+                                Adjusted medication dosage
+                            </div>
+                            <div class="record-meta">
+                                <span><i class="far fa-calendar-alt"></i> 2 Nov 2024</span>
+                                <span class="status status-success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-diagnoses"></i> Health Conditions</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-plus"></i> Add Note
+                        </button>
+                    </div>
+                </div>
+                <div class="record">
+                    <div class="record-content">
+                        <div class="record-title">Asthma (Mild Persistent)</div>
+                        <div class="record-details">
+                            Controlled with medication. Uses rescue inhaler 2-3 times per week. 
+                            Last significant episode November 2024.
+                        </div>
+                        <div class="record-meta">
+                            <span><i class="far fa-calendar-alt"></i> Diagnosed: 15 Jun 2023</span>
+                            <span><i class="fas fa-user-md"></i> Dr. Amit Joshi</span>
+                            <span class="status status-warning">Active - Managed</span>
+                        </div>
+                    </div>
+                    <div class="record-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-file-medical"></i> Details
+                        </button>
+                    </div>
+                </div>
+                <div class="record">
+                    <div class="record-content">
+                        <div class="record-title">Seasonal Allergies</div>
+                        <div class="record-details">
+                            Pollen allergy (tree, grass). Symptoms include sneezing, nasal congestion.
+                            Well-controlled with antihistamines.
+                        </div>
+                        <div class="record-meta">
+                            <span><i class="far fa-calendar-alt"></i> Diagnosed: 10 Mar 2022</span>
+                            <span><i class="fas fa-user-md"></i> Dr. Priya Patel</span>
+                            <span class="status status-success">Controlled</span>
+                        </div>
+                    </div>
+                    <div class="record-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-file-medical"></i> Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="medications">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-pills"></i> Current Medications</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Add Medication
+                        </button>
+                    </div>
+                </div>
+                <div class="record">
+                    <div class="record-content">
+                        <div class="record-title">Ventolin HFA Inhaler</div>
+                        <div class="record-details">
+                            <strong>Dosage:</strong> 1-2 puffs every 4-6 hours as needed<br>
+                            <strong>Instructions:</strong> Shake well before use
+                        </div>
+                        <div class="record-meta">
+                            <span><i class="far fa-calendar-alt"></i> Prescribed: 20 Jun 2023</span>
+                            <span><i class="fas fa-syringe"></i> Last refill: 10 Dec 2024</span>
+                            <span class="status status-primary">Refill due</span>
+                        </div>
+                    </div>
+                    <div class="record-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-info-circle"></i> Info
+                        </button>
+                    </div>
+                </div>
+                <div class="record">
+                    <div class="record-content">
+                        <div class="record-title">Cetirizine 10mg</div>
+                        <div class="record-details">
+                            <strong>Dosage:</strong> 1 tablet daily as needed for allergies<br>
+                            <strong>Instructions:</strong> Take in morning
+                        </div>
+                        <div class="record-meta">
+                            <span><i class="far fa-calendar-alt"></i> Prescribed: 15 Mar 2024</span>
+                            <span><i class="fas fa-syringe"></i> Last refill: 5 Jan 2025</span>
+                            <span class="status status-success">Active</span>
+                        </div>
+                    </div>
+                    <div class="record-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-info-circle"></i> Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="conditions">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-diagnoses"></i> Health Conditions</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Add Condition
+                        </button>
+                    </div>
+                </div>
+                <div class="record">
+                    <div class="record-content">
+                        <div class="record-title">Asthma (Mild Persistent)</div>
+                        <div class="record-details">
+                            <strong>Description:</strong> Chronic inflammatory disease of the airways<br>
+                            <strong>Treatment Plan:</strong> Controller medication, rescue inhaler as needed
+                        </div>
+                        <div class="record-meta">
+                            <span><i class="far fa-calendar-alt"></i> Diagnosed: 15 Jun 2023</span>
+                            <span><i class="fas fa-user-md"></i> Dr. Amit Joshi</span>
+                            <span class="status status-warning">Active - Managed</span>
+                        </div>
+                    </div>
+                    <div class="record-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-file-medical"></i> Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="appointments">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-calendar-alt"></i> Upcoming Appointments</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Schedule
+                        </button>
+                    </div>
+                </div>
+                <div class="record">
+                    <div class="record-content">
+                        <div class="record-title">Annual Physical Exam</div>
+                        <div class="record-details">
+                            <strong>Provider:</strong> Dr. Priya Patel, Primary Care<br>
+                            <strong>Location:</strong> TMed Clinic
+                        </div>
+                        <div class="record-meta">
+                            <span><i class="far fa-calendar-alt"></i> 15 Mar 2025 at 9:30 AM</span>
+                            <span class="status status-primary">Scheduled</span>
+                        </div>
+                    </div>
+                    <div class="record-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-edit"></i> Reschedule
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>TMed</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Find a Doctor</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Medical Records</a></li>
+                        <li><a href="#">Billing</a></li>
+                        <li><a href="#">Patient Education</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 9876543210</li>
+                        <li><i class="fas fa-envelope"></i> info@TMed.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Bangalore, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 TMed. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Vitals Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('vitalsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+                    datasets: [{
+                        label: 'Systolic (mmHg)',
+                        data: [122, 125, 118, 120, 119, 121, 120],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }, {
+                        label: 'Diastolic (mmHg)',
+                        data: [80, 82, 78, 79, 77, 80, 80],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 70,
+                            max: 130,
+                            ticks: {
+                                stepSize: 10
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
